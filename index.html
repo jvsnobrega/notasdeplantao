@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notas de Plantão</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      background: #1c1c1c;
+      position: sticky;
+      top: 0;
+      align-items: center;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #ff4444;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .clearFilter {
+      background: #555;
+    }
+
+    .list {
+      padding: 10px;
+    }
+
+    .card {
+      background: #222;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    /* 🔴 ALERTA */
+    .alert {
+      border: 2px solid #ff4444;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,68,68,0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(255,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,68,68,0); }
+    }
+
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 30px;
+      background: #00c853;
+      color: white;
+      border: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+      gap: 10px;
+    }
+
+    .modal input, .modal textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .tag {
+      color: #00e5ff;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    .tag.active {
+      background: #00e5ff;
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .pin {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .alertIcon {
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <input id="search" placeholder="#tag ou paciente">
+  <button class="clearFilter" onclick="clearFilter()">Limpar</button>
+  <button onclick="clearAll()">Encerrar</button>
+</header>
+
+<div class="list" id="list"></div>
+
+<button class="fab" onclick="openModal()">+</button>
+
+<div class="modal" id="modal">
+  <input id="paciente" placeholder="Paciente">
+  <input id="leito" placeholder="Leito">
+  <textarea id="nota" rows="6" placeholder="Notas (#tag)"></textarea>
+  <button onclick="closeModal()">Fechar</button>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
