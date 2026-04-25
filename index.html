@@ -54,19 +54,6 @@
       padding: 12px;
       margin-bottom: 10px;
       border-radius: 10px;
-      transition: 0.2s;
-    }
-
-    /* 🔴 ALERTA */
-    .alert {
-      border: 2px solid #ff4444;
-      animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255,68,68,0.6); }
-      70% { box-shadow: 0 0 0 10px rgba(255,68,68,0); }
-      100% { box-shadow: 0 0 0 0 rgba(255,68,68,0); }
     }
 
     .fab {
@@ -92,9 +79,17 @@
       gap: 10px;
     }
 
+    .modal input {
+      height: 40px;
+    }
+
+    .modal textarea {
+      height: 100px;
+    }
+
     .modal input, .modal textarea {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
       border: none;
       font-size: 16px;
@@ -117,10 +112,6 @@
       cursor: pointer;
       font-size: 18px;
     }
-
-    .alertIcon {
-      margin-right: 6px;
-    }
   </style>
 </head>
 <body>
@@ -138,7 +129,7 @@
 <div class="modal" id="modal">
   <input id="paciente" placeholder="Paciente">
   <input id="leito" placeholder="Leito">
-  <textarea id="nota" rows="6" placeholder="Notas (#tag)"></textarea>
+  <textarea id="nota" placeholder="Notas (#tag)"></textarea>
   <button onclick="closeModal()">Fechar</button>
 </div>
 
