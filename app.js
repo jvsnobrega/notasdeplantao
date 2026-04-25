@@ -2,8 +2,6 @@ let notas = JSON.parse(localStorage.getItem("notas") || "[]");
 let editId = null;
 let activeTag = null;
 
-const ALERT_TAGS = ["#urgente", "#reavaliar", "#pendente"];
-
 const listEl = document.getElementById("list");
 const modal = document.getElementById("modal");
 
@@ -18,11 +16,6 @@ function save() {
 
 function extractTags(text) {
   return text.match(/#\w+/g) || [];
-}
-
-// verifica se tem tag de alerta
-function hasAlert(tags) {
-  return tags.some(t => ALERT_TAGS.includes(t.toLowerCase()));
 }
 
 function applyTagFilter(tag) {
@@ -48,6 +41,13 @@ function togglePin(id) {
   render();
 }
 
+// 🔴 NOVO: confirmação antes de excluir
+function confirmDelete(id) {
+  if (confirm("Deseja excluir este paciente?")) {
+    deleteNota(id);
+  }
+}
+
 function render() {
   const search = searchInput.value.toLowerCase();
 
@@ -69,18 +69,11 @@ function render() {
       const div = document.createElement("div");
       div.className = "card";
 
-      const tagsArr = extractTags(n.nota);
-      const isAlert = hasAlert(tagsArr);
-
-      if (isAlert) {
-        div.classList.add("alert");
-      }
-
       if (n.pinned) {
         div.style.border = "2px solid #00c853";
       }
 
-      const tags = tagsArr
+      const tags = extractTags(n.nota)
         .map(t => {
           const isActive = t === activeTag;
           return `<span class="tag ${isActive ? "active" : ""}" 
@@ -92,10 +85,7 @@ function render() {
 
       div.innerHTML = `
         <div style="display:flex; justify-content:space-between;">
-          <strong>
-            ${isAlert ? '<span class="alertIcon">⚠️</span>' : ''}
-            ${n.paciente} ${n.leito ? "- " + n.leito : ""}
-          </strong>
+          <strong>${n.paciente} ${n.leito ? "- " + n.leito : ""}</strong>
           <span class="pin" onclick="event.stopPropagation(); togglePin(${n.id})">
             ${n.pinned ? "📌" : "📍"}
           </span>
@@ -106,20 +96,20 @@ function render() {
 
       div.onclick = () => openModal(n);
 
-      // swipe delete
+      // swipe para excluir
       let startX = 0;
       div.addEventListener("touchstart", e => startX = e.touches[0].clientX);
       div.addEventListener("touchend", e => {
         let endX = e.changedTouches[0].clientX;
         if (startX - endX > 100) {
-          deleteNota(n.id);
+          confirmDelete(n.id);
         }
       });
 
-      // long press delete
+      // long press para excluir
       let pressTimer;
       div.onmousedown = () => {
-        pressTimer = setTimeout(() => deleteNota(n.id), 700);
+        pressTimer = setTimeout(() => confirmDelete(n.id), 700);
       };
       div.onmouseup = () => clearTimeout(pressTimer);
 
